@@ -62,9 +62,13 @@ async def redeem_genshin():
 def extract_active_starrail_codes(soup):
     codes = []
     for tr in soup.find("table").findAll("tr"):
-        code = str(tr.find("td"))
-        if code != "None":
-            codes.append(code[code.find(">")+1 : code.find("\n</")])
+        td = tr.find("td")
+        if td is not None:
+            b_tag = td.find("b")
+            if b_tag is not None:
+                code_tag = b_tag.find("code")
+                if code_tag is not None:
+                    codes.append(code_tag.text)
     return codes
 
 async def redeem_starrail():
